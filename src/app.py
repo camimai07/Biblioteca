@@ -1,13 +1,14 @@
 #importo framework
 import os
 from flask import Flask
-from flask import render_template, request, redirect #el request y el redirect son para el formulario
+from flask import render_template, request, redirect, session #el request y el redirect son para el formulario
 from flaskext.mysql import MySQL
 from datetime import datetime
 from flask import send_from_directory
 
 #creando aplicacion con la base de datos
 app= Flask(__name__)
+app.secret_key="admin_activo" #uso de variables de session
 mysql=MySQL()
 
 app.config['MYSQL_DATABASE_HOST']='localhost'
@@ -46,8 +47,62 @@ def nosotros():
 def admin_index():
     return render_template('admin/index.html')
 
-@app.route('/admin/login')
+@app.route('/admin/login') #, methods=['POST']
 def admin_login():
+    return render_template('admin/login.html')
+
+
+@app.route('/admin/login', methods=['POST']) #
+def admin_login_post():
+
+    _usuario=request.form['txtUsuario']
+    _password=request.form['txtPassword']
+    
+    conexion=mysql.connect() #conexion con la base de datos sql
+    cursor = conexion.cursor()
+    #probamos
+    consulta_user= cursor.execute("SELECT * FROM `usuarios` WHERE usuario = %s", (_usuario))
+    consulta_password= cursor.execute("SELECT * FROM `usuarios` WHERE password = %s", (_password))
+    conexion.commit()
+
+    if consulta_user == True and consulta_password==True:
+        session["login"]=True
+        session["usuario"]= "Administrador"
+        return redirect('/admin')
+   
+    
+    return render_template('admin/login.html')
+    
+    
+    #averiguar como consultar a base de datos si existe usuario
+    
+
+
+    #CREAR CONSULTA DE EXISTENCIA DE USUARIO Y REDIRECCIONA AL ADMIN INICIO
+
+    
+
+@app.route('/admin/registro')
+def admin_registro():
+    return render_template('admin/registro.html')
+
+
+@app.route('/admin/registro', methods=['POST'])#
+def admin_registro_post():
+    #capturo datos del usuario
+    _usuario=request.form['txtUsuario']
+    _password=request.form['txtPassword']
+
+
+    sql = "INSERT INTO `usuarios`(`ID`, `usuario`, `password`) VALUES (NULL, %s, %s);" #inserto en la base de datos
+    datos = (_usuario, _password) #almaceno datos del usuario en la variable
+    
+    conexion= mysql.connect() #conexion con DB
+    cursor= conexion.cursor() #cursor busqueda
+    cursor.execute(sql,datos) #cursor ejecucion   #superpongo datos con sentencia en sql
+    conexion.commit() #confirmacion de guardar los movimientos realizados
+
+
     return render_template('admin/login.html')
 
 @app.route('/admin/logout')
@@ -76,7 +131,7 @@ def admin_libros_guardar():
 
     if _archivo.filename!="":
         nuevoNombre=horaActual+"_"+_archivo.filename
-        _archivo.save("templates/sitio/imagenes/"+nuevoNombre)
+        _archivo.save("templates/sitio/imagenes/"+nuevoNombre) #guardo nuevo nombre de la imagen
 
 
 
