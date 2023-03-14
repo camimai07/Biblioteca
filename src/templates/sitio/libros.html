@@ -4,50 +4,21 @@
     Hay que dividir por 4 columnas(col) de 3 elementos -->
 
     <div class="row">
+        {% for libro in libros %}
         <div class="col-md-3">
             <div class="card">
-                <img class="card-img-top" src="https://www.lanormallibros.com.ar/media/libros/da959aa6921b805a176cd623df8a1553.jpg" alt="Title">
+                <img class="card-img-top" src="/imagenes/{{ libro[2] }}" alt="Title">
                 <div class="card-body">
-                    <h4 class="card-title">Harry Potter y la piedra filosofal</h4>
+                    <!-- RECORDAR TABLA EN ADMIN/LIBROS = INDICE 0 ID, 1 NOMBRE, 2 IMAGEN, 3 URL, 4 ACCIONES -->
+                    <h4 class="card-title"> {{ libro[1] }} </h4>
                     <p class="card-text">
-                        <a name="" id="" class="btn btn-primary" href="https://harry_potter_1.org/descarga.pdf" role="button">Descargar</a>
+                        <a name="" id="" class="btn btn-primary" href="{{ libro[3] }}" role="button">Descargar</a>
                     </p>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card">
-                <img class="card-img-top" src="https://www.lanormallibros.com.ar/media/libros/6f1d8f2a599df883680a55a26e926f4d.jpg" alt="Title">
-                <div class="card-body">
-                    <h4 class="card-title">Harry Potter y la cámara secreta</h4>
-                    <p class="card-text">
-                        <a name="" id="" class="btn btn-primary" href="https://harry_potter_2.org/descarga.pdf" role="button">Descargar</a>
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card">
-                <img class="card-img-top" src="https://www.lanormallibros.com.ar/media/libros/8b6b6a2da920bf21c4ddcff01077f201.jpg" alt="Title">
-                <div class="card-body">
-                    <h4 class="card-title">Harry Potter y el prisionero de Azkaban</h4>
-                    <p class="card-text">
-                        <a name="" id="" class="btn btn-primary" href="https://harry_potter_3.org/descarga.pdf" role="button">Descargar</a>
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card">
-                <img class="card-img-top" src="https://www.lanormallibros.com.ar/media/libros/ae311c988832d6afa2ee8e5b393c64c9.jpg" alt="Title">
-                <div class="card-body">
-                    <h4 class="card-title">Harry Potter y el cáliz de fuego</h4>
-                    <p class="card-text">
-                        <a name="" id="" class="btn btn-primary" href="https://harry_potter_4.org/descarga.pdf" role="button">Descargar</a>
-                    </p>
-                </div>
-            </div>
-        </div>
+        {% endfor %}
+        
     </div>
 
 

@@ -23,13 +23,20 @@ def inicio():
 
 @app.route('/imagenes/<imagen>')
 def imagenes(imagen):
-    print(imagen)
+    # print(imagen)
     return send_from_directory(os.path.join('templates/sitio/imagenes'),imagen)
 
 
 @app.route('/libros')
 def libros():
-    return render_template('sitio/libros.html')
+
+    conexion=mysql.connect() #conexion con la base de datos sql
+    cursor = conexion.cursor()
+    cursor.execute("SELECT * FROM `libros`")
+    libros = cursor.fetchall() #trae todos los registros y los guarda en libros
+    conexion.commit()
+
+    return render_template('sitio/libros.html', libros=libros)
 
 @app.route('/nosotros')
 def nosotros():
@@ -87,14 +94,18 @@ def admin_libros_guardar():
 @app.route('/admin/libros/borrar', methods={'POST'})
 def admin_libros_borrar():
     _id=request.form['txtID']
-    print(_id)
+    # print(_id)
     
     conexion=mysql.connect() #conexion con la base de datos sql
     cursor = conexion.cursor()
-    cursor.execute("SELECT * FROM `libros`WHERE id = %s", (_id))
-    libro = cursor.fetchall() #fetchall me trae todos los datos del registro
+    cursor.execute("SELECT imagen FROM `libros`WHERE id = %s", (_id))
+    libro = cursor.fetchall() #fetchall me trae todos los datos del registro con la imagen
     conexion.commit()
-    print(libro)
+    # print(libro)
+
+    if os.path.exists("templates/sitio/imagenes/"+str(libro[0][0])): #chequea si existe la ruta y transforma el nombre de imagen (que es un int) en str
+        os.unlink("templates/sitio/imagenes/"+str(libro[0][0])) #se hace el borrado
+
     
     conexion=mysql.connect() #conexion con la base de datos sql
     cursor = conexion.cursor()
