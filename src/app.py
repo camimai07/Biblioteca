@@ -82,7 +82,7 @@ def admin_login_post():
         session['usuario'] = _usuario # nombre a cargo de la sesion
         return redirect('/admin')
    
-    # return render_template('admin/login.html')
+    return render_template('admin/login.html') #si password no esta en pass entonces me redirije
     
 
 @app.route('/admin/registro')
@@ -95,7 +95,9 @@ def admin_registro_post():
     #capturo datos del usuario
     _usuario=request.form['txtUsuario']
     _password=request.form['txtPassword']
-
+    
+    if _usuario=='' or _password=='':
+        return render_template('admin/registro.html', mensaje1="Ingresa un usuario y contraseña válido.")
 
     sql = "INSERT INTO `usuarios`(`ID`, `usuario`, `password`) VALUES (NULL, %s, %s);" #inserto en la base de datos
     datos = (_usuario, _password) #almaceno datos del usuario en la variable
@@ -105,6 +107,7 @@ def admin_registro_post():
     cursor.execute(sql,datos) #cursor ejecucion   #superpongo datos con sentencia en sql
     conexion.commit() #confirmacion de guardar los movimientos realizados
 
+    
 
     return redirect('/admin/login') # desp del login hay problemas para usar render_template, recurro a redirect
 #-----------------------

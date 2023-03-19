@@ -23,6 +23,15 @@
             </div>
             <div class="col-md-4">
                 <br>
+                {% if mensaje1 %} 
+
+                <div class="alert alert-danger" role="alert"> 
+                  <strong>{{ mensaje1 }}</strong>
+                </div>
+              
+
+                {% endif %}
+
                 <div class="card">
                     <div class="card-header">
                         Inicio de sesión
@@ -43,7 +52,7 @@
                               <!-- <small id="helpId" class="form-text text-muted">Help text</small> -->
                             </div>
 
-                            <button type="submit" class="btn btn-success">Registrarse</button>   
+                            <button type="submit" class="btn btn-success">Registrarse</button><br>¿Ya tienes una cuenta? <a href="/admin/login">Inicia sesión.</a>  
 
                         </form>
 
