@@ -1,4 +1,3 @@
-# web-python
-con base de datos
+#WEB PYTHON CON BASE DE DATOS SQL, LOGIN Y CATALOGO DE PRODUCTOS.
 
--------EN PROCESO-------
+
