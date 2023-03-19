@@ -27,6 +27,11 @@ def imagenes(imagen):
     # print(imagen)
     return send_from_directory(os.path.join('templates/sitio/imagenes'),imagen)
 
+@app.route('/css/<estilos>')
+def css_link(estilos):
+    return send_from_directory(os.path.join('templates/sitio/css'),estilos)
+
+
 
 @app.route('/libros')
 def libros():
@@ -45,41 +50,39 @@ def nosotros():
 
 @app.route('/admin/')
 def admin_index():
+    
+    if not 'login' in session:
+        return redirect('/admin/login')
+        
     return render_template('admin/index.html')
 
-@app.route('/admin/login') #, methods=['POST']
+
+@app.route('/admin/login') 
 def admin_login():
     return render_template('admin/login.html')
 
 
-@app.route('/admin/login', methods=['POST']) #
+@app.route('/admin/login', methods=['POST']) 
 def admin_login_post():
 
     _usuario=request.form['txtUsuario']
     _password=request.form['txtPassword']
     
     conexion=mysql.connect() #conexion con la base de datos sql
-    cursor = conexion.cursor()
-    #probamos
-    consulta_user= cursor.execute("SELECT * FROM `usuarios` WHERE usuario = %s", (_usuario))
-    consulta_password= cursor.execute("SELECT * FROM `usuarios` WHERE password = %s", (_password))
-    conexion.commit()
+    cursor = conexion.cursor() #conexion busqueda
+    cursor.execute("SELECT password FROM `usuarios` WHERE usuario = %s", (_usuario)) #ejecicion de busqueda
+    _pass = cursor.fetchone() #trae un solo registro y lo guardo en variable
+    conexion.commit()  #guardo los cambios
+        
+    if not _pass: # o if _pass == None: si no existe o no se admite
+        return render_template('admin/login.html', mensaje="Acceso denegado")
 
-    if consulta_user == True and consulta_password==True:
-        session["login"]=True
-        session["usuario"]= "Administrador"
+    if _password in _pass:
+        session['login'] = True # mantiene la sesion abierta
+        session['usuario'] = _usuario # nombre a cargo de la sesion
         return redirect('/admin')
    
-    
-    return render_template('admin/login.html')
-    
-    
-    #averiguar como consultar a base de datos si existe usuario
-    
-
-
-    #CREAR CONSULTA DE EXISTENCIA DE USUARIO Y REDIRECCIONA AL ADMIN INICIO
-
+    # return render_template('admin/login.html')
     
 
 @app.route('/admin/registro')
@@ -103,25 +106,34 @@ def admin_registro_post():
     conexion.commit() #confirmacion de guardar los movimientos realizados
 
 
-    return render_template('admin/login.html')
-
+    return redirect('/admin/login') # desp del login hay problemas para usar render_template, recurro a redirect
+#-----------------------
 @app.route('/admin/logout')
 def admin_logout():
-    return render_template('admin/logout.html')
-
+    session.clear()
+    return redirect('/admin/login')
+#-------------------------
 @app.route('/admin/libros')
 def admin_libros():
+
+    if not 'login' in session:
+        return redirect('/admin/login')
+
     conexion=mysql.connect() #conexion con la base de datos sql
     cursor = conexion.cursor()
     cursor.execute("SELECT * FROM `libros`")
     libros = cursor.fetchall()
     conexion.commit()
-    #print(libros)
 
     return render_template('admin/libros.html', libros=libros)
 
 @app.route('/admin/libros/guardar', methods=['POST'])
 def admin_libros_guardar():
+
+    if not 'login' in session:
+        return redirect('/admin/login')
+
+
     _nombre=request.form['txtNombre']
     _url=request.form['txtURL']
     _archivo=request.files['txtImagen']
@@ -148,6 +160,9 @@ def admin_libros_guardar():
 
 @app.route('/admin/libros/borrar', methods={'POST'})
 def admin_libros_borrar():
+    if not 'login' in session:
+        return redirect('/admin/login')
+    
     _id=request.form['txtID']
     # print(_id)
     

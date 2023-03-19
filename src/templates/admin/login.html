@@ -22,6 +22,17 @@
             </div>
             <div class="col-md-4">
                 <br>
+                {% if mensaje %} <!--detecta codifo python-->
+                <div class="alert alert-danger" role="alert"> 
+                  <strong>{{ mensaje }}</strong><br>
+                  Usuario y/o contraseña incorrectos.  <!--detecta variable, jinja2-->
+                </div>
+              
+
+                {% endif %}
+
+              
+
                 <div class="card">
                     <div class="card-header">
                         Inicio de sesión

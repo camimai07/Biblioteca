@@ -1,9 +1,11 @@
 {% include 'admin/cabecera.html' %}
+
+
 <div class="p-5 mb-4 bg-light rounded-3">
     <div class="container-fluid py-5">
-      <h1 class="display-5 fw-bold">Bienvenid@ al administrador del sitio</h1>
+      <h1 class="display-5 fw-bold">Bienvenid@ <strong>{{ session["usuario"] }}</strong> al administrador del sitio</h1>
       <p class="col-md-8 fs-4">Aquí podrá administrar los libros del sitio web</p>
-      <a class="btn btn-primary btn-lg" href="/libros" role="button">Comenzar gestión</a>
+      <a class="btn btn-primary btn-lg" href="/admin/libros" role="button">Comenzar gestión</a>
     </div>
   </div>
  

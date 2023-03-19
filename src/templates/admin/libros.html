@@ -40,7 +40,7 @@
         </div>
         <div class="col-md-7">
             <div class="table-responsive">
-                <table class="table">
+                <table class="table table-bordered">
                     <thead>
                         <tr>
                             <th scope="col">ID</th>
@@ -58,10 +58,14 @@
                             <td>
 
                                 <img width="60" src="/imagenes/{{libro[2]}}" class="img-fluid" alt="">
-                                {{libro[2]}}
+                          
 
                             </td>
-                            <td>{{libro[3]}}</td>
+                            <td>
+                                
+                                <a name="" id="" class="btn btn-success" href="{{libro[3]}}" role="button">Enlace...</a>
+                            
+                            </td>
                             <td>
                                
                                 <form action="/admin/libros/borrar" method="post">
