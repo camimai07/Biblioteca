@@ -14,7 +14,7 @@ mysql=MySQL()
 app.config['MYSQL_DATABASE_HOST']='localhost'
 app.config['MYSQL_DATABASE_USER']='root'
 app.config['MYSQL_DATABASE_PASSWORD']=''
-app.config['MYSQL_DATABASE_DB']='sitio'
+app.config['MYSQL_DATABASE_DB']='sitio1'
 mysql.init_app(app)
 
 #ruta de inicio/escape por default
