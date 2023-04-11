@@ -1,3 +1,3 @@
 # web-python
-con base de datos
+LIBRERIA CON LOGIN ADMINISTRADOR, CRUD, BASE DE DATOS SQL.
 
