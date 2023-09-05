@@ -143,25 +143,32 @@ def admin_libros_guardar():
 
     tiempo= datetime.now() #captura el tiempo del momento
     horaActual=tiempo.strftime('%Y%H%M%S') #detallando el formato del tiempo que quiero capturar
-    
-    if _nombre=='' or _url=='' or _archivo=='':
-        return render_template('admin/libros.html', mensaje_invalido="Debe completar todas las casillas")
-    
+   
+    if _nombre=='' or _url=='':
+        conexion = mysql.connect() #conexion con la base de datos sql
+        cursor = conexion.cursor()
+        cursor.execute("SELECT * FROM `libros`")
+        libros = cursor.fetchall()
+        conexion.commit()
+        return render_template('admin/libros.html', mensaje_invalido="Debe completar todas las casillas",libros=libros)
     
     if _archivo.filename!="":
         nuevoNombre=horaActual+"_"+_archivo.filename
         
         _archivo.save("src/templates/sitio/imagenes/"+nuevoNombre) #guardo nuevo nombre de la imagen
 
-
-
-    sql = "INSERT INTO `libros`(`id`, `nombre`, `imagen`, `url`) VALUES (NULL, %s, %s, %s);"
-    datos = (_nombre, nuevoNombre, _url)
     
+    
+    sql = "INSERT INTO `libros`(`id`, `nombre`, `imagen`, `url`) VALUES (NULL, %s, %s, %s);"
+    datos = (_nombre, nuevoNombre, _url)    
     conexion= mysql.connect() #conexion con DB
     cursor= conexion.cursor() #cursor busqueda
     cursor.execute(sql,datos) #cursor ejecucion   #superpongo datos con sentencia en sql
     conexion.commit() #confirmacion de guardar los movimientos realizados
+    
+    
+    
+
 
 
     return redirect('/admin/libros') #redirecciona a la misma pag
