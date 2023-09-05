@@ -97,7 +97,7 @@ def admin_registro_post():
     _password=request.form['txtPassword']
     
     if _usuario=='' or _password=='':
-        return render_template('admin/registro.html', mensaje1="Ingresa un usuario y contraseña válido.")
+        return render_template('admin/registro.html', mensaje1="Ingresa un usuario y/o contraseña válido.")
 
     sql = "INSERT INTO `usuarios`(`ID`, `usuario`, `password`) VALUES (NULL, %s, %s);" #inserto en la base de datos
     datos = (_usuario, _password) #almaceno datos del usuario en la variable
@@ -107,9 +107,9 @@ def admin_registro_post():
     cursor.execute(sql,datos) #cursor ejecucion   #superpongo datos con sentencia en sql
     conexion.commit() #confirmacion de guardar los movimientos realizados
 
-    
+    return render_template('admin/login.html', mensaje_nuevoUsuario="Usuario creado con éxito!")
 
-    return redirect('/admin/login') # desp del login hay problemas para usar render_template, recurro a redirect
+    # return redirect('/admin/login') # desp del login hay problemas para usar render_template, recurro a redirect
 #-----------------------
 @app.route('/admin/logout')
 def admin_logout():
@@ -122,7 +122,7 @@ def admin_libros():
     if not 'login' in session:
         return redirect('/admin/login')
 
-    conexion=mysql.connect() #conexion con la base de datos sql
+    conexion = mysql.connect() #conexion con la base de datos sql
     cursor = conexion.cursor()
     cursor.execute("SELECT * FROM `libros`")
     libros = cursor.fetchall()
@@ -143,10 +143,15 @@ def admin_libros_guardar():
 
     tiempo= datetime.now() #captura el tiempo del momento
     horaActual=tiempo.strftime('%Y%H%M%S') #detallando el formato del tiempo que quiero capturar
-
+    
+    if _nombre=='' or _url=='' or _archivo=='':
+        return render_template('admin/libros.html', mensaje_invalido="Debe completar todas las casillas")
+    
+    
     if _archivo.filename!="":
         nuevoNombre=horaActual+"_"+_archivo.filename
-        _archivo.save("templates/sitio/imagenes/"+nuevoNombre) #guardo nuevo nombre de la imagen
+        
+        _archivo.save("src/templates/sitio/imagenes/"+nuevoNombre) #guardo nuevo nombre de la imagen
 
 
 

@@ -5,6 +5,13 @@
     <div class="row">
         <div class="col-md-5">
             <div class="card">
+                <br>
+                {% if mensaje_invalido %} <!--detecta codigo python-->
+                <div class="alert alert-danger" role="alert"> 
+                  <strong>{{ mensaje_invalido }}</strong><br>
+                </div>
+              
+                {% endif %}
                 <div class="card-header">
                     Datos del libro
                 </div>

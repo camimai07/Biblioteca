@@ -8,10 +8,17 @@
             </div>
             <div class="col-md-4">
                 <br>
-                {% if mensaje %} <!--detecta codifo python-->
+                {% if mensaje %} <!--detecta codigo python-->
                 <div class="alert alert-danger" role="alert"> 
                   <strong>{{ mensaje }}</strong><br>
                   Usuario y/o contraseña incorrectos.  <!--detecta variable, jinja2-->
+                </div>
+              
+
+                {% endif %}
+                {% if mensaje_nuevoUsuario %} <!--detecta codigo python-->
+                <div class="alert alert-success" role="alert"> 
+                  <strong>{{ mensaje_nuevoUsuario }}</strong><br>
                 </div>
               
 
