@@ -1,4 +1,4 @@
-{% include 'sitio/cabecera.html' %}
+{% include 'sitio/navbar.html' %}
 
 <!-- boostrap maneja filas de 12 elementos. 
     Hay que dividir por 4 columnas(col) de 3 elementos -->
@@ -9,7 +9,7 @@
             <div class="card">
                 <img class="card-img-top" src="/imagenes/{{ libro[2] }}" alt="Title">
                 <div class="card-body">
-                    <!-- RECORDAR TABLA EN ADMIN/LIBROS = INDICE 0 ID, 1 NOMBRE, 2 IMAGEN, 3 URL, 4 ACCIONES -->
+                    <!-- TABLA EN ADMIN/LIBROS = INDICE 0 ID, 1 NOMBRE, 2 IMAGEN, 3 URL, 4 ACCIONES -->
                     <h4 class="card-title"> {{ libro[1] }} </h4>
                     <p class="card-text">
                         <a name="" id="" class="btn btn-success" href="{{ libro[3] }}" role="button">Descargar</a>
